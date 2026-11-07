@@ -40,20 +40,50 @@ clock = pygame.time.Clock()
 
 
 # Тут опишите все классы игры.
-...
+class GameObject:
+    """Базовый класс игровых объектов."""
+
+    def __init__(self, body_color):
+        self.position = ((GRID_WIDTH // 2) * GRID_SIZE,
+                        (GRID_HEIGHT // 2) * GRID_SIZE)
+        self.body_color = body_color
+
+    def draw(self):
+        pass
+
+
+class Apple(GameObject):
+    """Яблоко."""
+
+    def __init__(self):
+        super().__init__(APPLE_COLOR)
+        self.body_color = pygame.Color(APPLE_COLOR)
+        self.randomize_position()
+
+    def randomize_position(self):
+        pos_x = choice(range(0, SCREEN_WIDTH, GRID_SIZE))
+        pos_y = choice(range(0, SCREEN_HEIGHT, GRID_SIZE))
+        self.position = (pos_x, pos_y)
+
+    def draw(self):
+        rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, self.body_color, rect)
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+
 
 
 def main():
     # Инициализация PyGame:
     pygame.init()
     # Тут нужно создать экземпляры классов.
-    ...
+    apple = Apple()
 
-    # while True:
-    #     clock.tick(SPEED)
-
+    while True:
+        clock.tick(SPEED)
+        apple.draw()
         # Тут опишите основную логику игры.
         # ...
+        pygame.display.update()
 
 
 if __name__ == '__main__':
